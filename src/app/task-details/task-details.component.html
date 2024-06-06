@@ -1,0 +1,47 @@
+
+
+<div *ngIf="task">
+    <div *ngIf="!isEditMode">
+      <h2>{{ task.title | uppercase }}</h2>
+      <p>{{ task.description }}</p>
+      <p>Type: {{ task.type }}</p>
+      <p>Created On: {{ task.createdOn | date: 'dd/MM/yy, hh:mm a' }}</p>
+      <p>Status: {{ task.status }}</p>
+      <button type="button" (click)="editMode()">Edit</button>
+    </div>
+    
+    <div *ngIf="isEditMode">
+      <form [formGroup]="taskForm" (ngSubmit)="onSave()">
+        <label for="title">Title:</label>
+        <input id="title" formControlName="title" required>
+        <div *ngIf="taskForm.controls['title'].invalid && (taskForm.controls['title'].dirty || taskForm.controls['title'].touched)">
+          Title is required.
+        </div>
+  
+        <label for="description">Description:</label>
+        <input id="description" formControlName="description" required>
+        <div *ngIf="taskForm.controls['description'].invalid && (taskForm.controls['description'].dirty || taskForm.controls['description'].touched)">
+          Description is required.
+        </div>
+  
+        <label for="type">Type:</label>
+        <input id="type" formControlName="type" required>
+        <div *ngIf="taskForm.controls['type'].invalid && (taskForm.controls['type'].dirty || taskForm.controls['type'].touched)">
+          Type is required.
+        </div>
+  
+        <label for="status">Status:</label>
+        <select id="status" formControlName="status">
+          <option value="pending">Pending</option>
+          <option value="completed">Completed</option>
+        </select>
+  
+        <button type="submit" [disabled]="taskForm.invalid">Save</button>
+        <button type="button" (click)="editMode()">Cancel</button>
+      </form>
+    </div>
+  </div>
+  <div *ngIf="!task">
+    <p>Task not found</p>
+  </div>
+  

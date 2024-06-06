@@ -2,12 +2,13 @@ export interface Task{
     title : string;
     description: string;
     type: string ;
-    createdOn : Date;
-    status: 'pending'| 'completed';
+    createdOn : string;
+    status: string;
 }
-export interface TaskList {
-    tasks: Task[];
-  }
+// 'pending'| 'completed';
+// export interface TaskList {
+//     tasks: Task[];
+//   }
 
 // export interface TaskList{
 //     total: number;

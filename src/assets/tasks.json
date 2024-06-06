@@ -1,4 +1,5 @@
-[
+{
+  "tasks": [
   {
     "title": "Kaķis",
     "description": "Aizvest kaķi pie degunārsta",
@@ -12,5 +13,13 @@
     "type": "Job",
     "createdOn": "2024-05-25T09:03:40Z",
     "status": "completed"
+  },
+  {
+    "title": "Izvest zivi pastaigā",
+    "description": "Neaizmirsti siksniņu",
+    "type": "Chore",
+    "createdOn": "2024-07-21T09:12:40Z",
+    "status": "pending"
   }
 ]
+}

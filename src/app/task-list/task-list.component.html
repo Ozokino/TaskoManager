@@ -1,13 +1,11 @@
 <h2>Task List</h2>
   <div *ngFor="let task of tasks; let i = index">
-    <h3>{{ task.title | uppercase}}</h3>
+    <h3><a [routerLink]="['/task-details', i]">{{ task.title | uppercase}}</a></h3>
     <p>{{ task.description }}</p>
-    <p>Type: {{ task.type }}</p>
+    <p>Type: {{ task.type }}</p> 
+    <p>Status: {{task.status}}</p>
     <p>Created On: {{ task.createdOn | date: 'dd/MM/yy, hh:mm a' }}</p>
-    <p><select id="status" formControlName="status">
-      <option value="pending">Pending</option>
-      <option value="completed">Completed</option>
-    </select></p>
+  
     <button type="button" (click)="onDeleteTask(i)">Delete</button>
   </div>
 

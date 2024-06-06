@@ -33,7 +33,7 @@ export class TaskCreateComponent implements OnInit {
         createdOn: new Date()
       };
       this.taskService.addTask(newTask);
-      this.taskForm.reset({ status: 'pending' }); // Reset form and set default status
+      this.taskForm.reset({ status: 'pending' }); 
     }
   }
 }
