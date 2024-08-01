@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Task, tempTask } from '../../models/task.model';
+import { Task, tempTask } from '../models/task.model';
 import { HttpClient } from '@angular/common/http';
 // import tasksdata from '../../assets/tasks.json';//mēģināju ielikt no assets foldera, bet nekādīgi nestrādāja//sanāca
 

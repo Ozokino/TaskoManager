@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { TaskService } from '../service/task.service';
-import { Task } from '../../models/task.model';
+import { Task } from '../models/task.model';
 
 @Component({
   selector: 'tasko-task-create',
