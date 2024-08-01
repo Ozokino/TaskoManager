@@ -2,7 +2,7 @@
 
 <div *ngIf="task">
     <div *ngIf="!isEditMode">
-      <h2>{{ task.title | uppercase }}</h2>
+      <h2>{{ task.title }}</h2>
       <p>{{ task.description }}</p>
       <p>Type: {{ task.type }}</p>
       <p>Created On: {{ task.createdOn | date: 'dd/MM/yy, hh:mm a' }}</p>
