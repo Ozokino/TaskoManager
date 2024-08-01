@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TaskService } from '../service/task.service';
-import { Task } from '../task';
+import { Task } from '../../models/task.model';
 import { RouterLink } from '@angular/router';
 
 @Component({
