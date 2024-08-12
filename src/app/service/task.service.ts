@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Task, tempTask } from '../models/task.model';
 import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 // import tasksdata from '../../assets/tasks.json';//mēģināju ielikt no assets foldera, bet nekādīgi nestrādāja//sanāca
 
 
@@ -12,20 +13,20 @@ export class TaskService {
 
   private apiUrl = 'http://localhost:8080/api/tasks';
 
-getAllTasks(){
-  return this.http.get(this.apiUrl);
+getAllTasks(): Observable<Task[]>{
+  return this.http.get<Task[]>(this.apiUrl);
 }
-getATask (id:string){  
-  return this.http.get(`${this.apiUrl}/${id}`);
+getATask (id:string): Observable<Task>{  
+  return this.http.get<Task>(`${this.apiUrl}/${id}`);
 }
-createTask (task :tempTask){  
-  return this.http.post(this.apiUrl, task);
+createTask (task :tempTask): Observable<Task>{  
+  return this.http.post<Task>(this.apiUrl, task);
 }
-deleteATask (id:string){  
-  return this.http.delete(`${this.apiUrl}/${id}`);
+deleteATask (id:string):Observable<Task>{  
+  return this.http.delete<Task>(`${this.apiUrl}/${id}`);
 }
-editATask (id:string, task:Task){  
-  return this.http.patch(`${this.apiUrl}/${id}`,task);
+editATask (id:string, task:Task):Observable<Task>{  
+  return this.http.patch<Task>(`${this.apiUrl}/${id}`,task);
 }
 }
  // private tasks: Task[] = tasksdata.tasks;

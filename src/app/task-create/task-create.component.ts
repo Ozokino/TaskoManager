@@ -4,6 +4,8 @@ import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angula
 import { HttpClientModule } from '@angular/common/http';
 import { TaskService } from '../service/task.service';
 import { Task } from '../models/task.model';
+import { Subject, takeUntil } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'tasko-task-create',
@@ -13,9 +15,11 @@ import { Task } from '../models/task.model';
   styleUrl: './task-create.component.scss'
 })
 export class TaskCreateComponent implements OnInit {
+
+  private destroy$: Subject<void>= new Subject<void>;
   taskForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private taskService: TaskService) {
+  constructor(private fb: FormBuilder, private taskService: TaskService, private router: Router, private http: HttpClientModule) {
     this.taskForm = this.fb.group({
       title: ['', Validators.required],
       description: ['', Validators.required],
@@ -25,14 +29,19 @@ export class TaskCreateComponent implements OnInit {
   }
 
   ngOnInit(): void {}
-
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
   onCreateTask() {
     if (this.taskForm.valid) {
       const newTask: Task = {
         ...this.taskForm.value,
         createdOn: new Date()
       };
-      this.taskService.addTask(newTask);
+      this.taskService.createTask(newTask).pipe(takeUntil(this.destroy$)).subscribe(()=> {
+        this.router.navigate(['/task-list']);
+      });
       this.taskForm.reset({ status: 'pending' }); 
     }
   }

@@ -2,12 +2,13 @@ import { Component } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { TaskCreateComponent } from './task-create/task-create.component';
 import { TaskListComponent } from './task-list/task-list.component';
+import { HttpClientModule } from '@angular/common/http';
 
 
 @Component({
   selector: 'tasko-root',
   standalone: true,
-  imports: [RouterOutlet, TaskCreateComponent, TaskListComponent, RouterLink, RouterLinkActive],
+  imports: [RouterOutlet, TaskCreateComponent, TaskListComponent, RouterLink, RouterLinkActive, HttpClientModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })

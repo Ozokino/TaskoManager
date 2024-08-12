@@ -1,17 +1,21 @@
 import { Routes } from '@angular/router';
-
+import { TaskCreateComponent } from './task-create/task-create.component';
+import { TaskDetailsComponent } from './task-details/task-details.component';
+import { TaskListComponent } from './task-list/task-list.component';
+import { HttpClientModule } from '@angular/common/http';
 
 export const routes: Routes = [
     {
         path:'task-list',
-        loadComponent: () => import ('./task-list/task-list.component').then((c)=> c.TaskListComponent)
+        component: TaskListComponent
     },
     {
         path:'task-create',
-        loadComponent: () => import ('./task-create/task-create.component').then((c)=> c.TaskCreateComponent)
+        component: TaskCreateComponent
     },
     {
         path:'task-details/:id',
-        loadComponent: () => import ('./task-details/task-details.component').then((c)=> c.TaskDetailsComponent)
+        component: TaskDetailsComponent
+        // loadComponent: () => import ('./task-details/task-details.component').then((c)=> c.TaskDetailsComponent)
     }
 ];

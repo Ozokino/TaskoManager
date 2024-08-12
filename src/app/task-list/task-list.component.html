@@ -1,12 +1,12 @@
 <h2>Task List</h2>
-  <div *ngFor="let task of tasks; let i = index">
-    <h3><a [routerLink]="['/task-details', i]">{{ task.title | uppercase}}</a></h3>
+  <div *ngFor="let task of tasks">
+    <h3><a [routerLink]="['/task-details', task._id]">{{ task.title | uppercase}}</a></h3>
     <p>{{ task.description }}</p>
     <p>Type: {{ task.type }}</p> 
     <p>Status: {{task.status}}</p>
     <p>Created On: {{ task.createdOn | date: 'dd/MM/yy, hh:mm a' }}</p>
   
-    <button type="button" (click)="onDeleteTask(i)">Delete</button>
+    <button type="button" (click)="deleteATask(task._id)">Delete</button>
   </div>
 
 
