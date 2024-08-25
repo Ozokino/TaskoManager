@@ -6,12 +6,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
 import { response } from 'express';
-import { HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'tasko-task-details',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, HttpClientModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './task-details.component.html',
   styleUrl: './task-details.component.scss'
 })
@@ -74,14 +73,4 @@ export class TaskDetailsComponent implements OnInit {
       this.router.navigate(['/task-list']);
     } 
   }
-  // this.tasksService.Servisa funkcija().pipe(takeUntil(this.destroy$)).subscribe({
-  //   next: (response: Task[]) => {
-  //     // te vai nu dabū tos requestotos datus, kas ir tas response variable vai arī ja tu sūti datus, te neko nevajag rakstīt jo tu neko nerequesto
-  //     //servisa funkcijā iekavās ieliec kkādu taskid vai editoto vai creatoto task, atkarībā kuru funkciju tu ņem
-  //   },
-  //   error: (error: Error) => {
-  //     console.error(error);
-  //   }
-  // }) 
-
 }
