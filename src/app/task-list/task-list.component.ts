@@ -38,7 +38,7 @@ export class TaskListComponent implements OnInit {
     })
   }
   deleteATask(taskId: string): void {
-    this.taskService.deleteATask(taskId).pipe(takeUntil(this.destroy$),switchMap(()=>this.taskService.getAllTasks())).subscribe(() => {
+    this.taskService.deleteATask(taskId).pipe(takeUntil(this.destroy$), switchMap(() => this.taskService.getAllTasks())).subscribe(() => {
       this.getTasks();
     });
   }

@@ -3,7 +3,7 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { TaskCreateComponent } from './task-create/task-create.component';
 import { TaskListComponent } from './task-list/task-list.component';
 
-interface navItem{
+interface navItem {
   title: string;
   route: string;
 }
@@ -16,7 +16,7 @@ type NavList = navItem[];
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-noListNav: NavList = [];
+  noListNav: NavList = [];
   title(title: string) {
     throw new Error('Method not implemented.');
   }

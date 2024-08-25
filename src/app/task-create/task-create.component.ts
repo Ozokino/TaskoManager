@@ -15,7 +15,7 @@ import { Router } from '@angular/router';
 })
 export class TaskCreateComponent implements OnInit {
 
-  private destroy$: Subject<void>= new Subject<void>;
+  private destroy$: Subject<void> = new Subject<void>;
   taskForm: FormGroup;
 
   constructor(private fb: FormBuilder, private taskService: TaskService, private router: Router) {
@@ -27,7 +27,7 @@ export class TaskCreateComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
@@ -38,11 +38,11 @@ export class TaskCreateComponent implements OnInit {
         ...this.taskForm.value,
         createdOn: new Date()
       };
-      this.taskService.createTask(newTask).pipe(takeUntil(this.destroy$)).subscribe(()=> {
+      this.taskService.createTask(newTask).pipe(takeUntil(this.destroy$)).subscribe(() => {
         this.taskForm.reset({ status: 'pending' });
         this.router.navigate(['/task-list']);
       });
-       
+
     }
   }
 }
