@@ -4,6 +4,7 @@ import { TaskService } from '../service/task.service';
 import { Task } from '../models/task.model';
 import { Subject, takeUntil, switchMap } from 'rxjs';
 import { Router, RouterLink } from '@angular/router';
+import { error } from 'node:console';
 
 @Component({
   selector: 'tasko-task-list',
@@ -38,9 +39,21 @@ export class TaskListComponent implements OnInit {
     })
   }
   deleteATask(taskId: string): void {
-    this.taskService.deleteATask(taskId).pipe(takeUntil(this.destroy$), switchMap(() => this.taskService.getAllTasks())).subscribe(() => {
-      this.getTasks();
-    });
+
+    this.taskService.deleteATask(taskId)
+
+      .pipe(
+        takeUntil(this.destroy$),
+        switchMap(() => this.taskService.getAllTasks()))
+
+      .subscribe({
+        next: (updatedTasks: Task[]) => {
+          this.tasks = updatedTasks;
+        },
+        error: (error: Error) => {
+          console.error(error);
+        }
+      });
   }
   viewTaskDetail(taskId: string) {
     this.router.navigate(['/task-details', taskId]);

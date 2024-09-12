@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { TaskService } from '../service/task.service';
 import { Task } from '../models/task.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Subject, takeUntil } from 'rxjs';
+import { catchError, of, Subject, switchMap, takeUntil } from 'rxjs';
 import { response } from 'express';
+import { error } from 'node:console';
 
 @Component({
   selector: 'tasko-task-details',
@@ -14,13 +15,14 @@ import { response } from 'express';
   templateUrl: './task-details.component.html',
   styleUrl: './task-details.component.scss'
 })
-export class TaskDetailsComponent implements OnInit {
-  task?: Task;
+export class TaskDetailsComponent implements OnInit, OnDestroy {
+  task: Task = { title: '', description: '', type: '', createdOn: '', status: 'pending', _id: '' };
   taskForm: FormGroup;
   isEditMode = false;
   private destroy$: Subject<void> = new Subject<void>;
 
   constructor(private route: ActivatedRoute, private taskService: TaskService, private router: Router, private fb: FormBuilder) {
+
     this.taskForm = this.fb.group({
       title: ['', Validators.required],
       description: ['', Validators.required],
@@ -29,49 +31,73 @@ export class TaskDetailsComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-    const taskId = this.route.snapshot.paramMap.get('id');
-    if (taskId) {
-      this.getTask(taskId);
-    }
 
+  ngOnInit(): void {
+    this.route.paramMap
+      .pipe(
+        takeUntil(this.destroy$),
+        switchMap(paramMap => {
+          const taskID = paramMap.get('id');
+
+          if (taskID) {
+            return this.taskService.getATask(taskID).pipe(
+              catchError(error => {
+                console.error(error);
+                this.taskNotFound();
+                return of(null);
+              })
+            );
+          } else {
+            this.taskNotFound();
+            return of(null);
+          }
+        })
+      )
+      .subscribe({
+        next: (response: Task | null) => {
+
+          if (response) {
+            this.task = response;
+            this.taskForm.setValue({
+              title: this.task.title,
+              description: this.task.description,
+              type: this.task.type,
+              status: this.task.status
+            });
+          }
+        }
+      });
   }
+
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
   }
-  getTask(id: string) {
-    this.taskService.getATask(id).pipe(takeUntil(this.destroy$)).subscribe({
-      next: (response: Task) => {
-        this.task = response;
-        if (this.task) {
-          this.taskForm.setValue({
-            title: this.task.title,
-            description: this.task.description,
-            type: this.task.type,
-            status: this.task.status
-          });
-        }
-      },
-      error: (error: Error) => {
-        console.error(error);
-      }
-    })
 
+  taskNotFound(): void {
+    alert('Task not found');
+    this.router.navigate(['/task-list']);
   }
   editMode() {
     this.isEditMode = !this.isEditMode;
   }
   onSave() {
-    if (this.taskForm.valid && this.task) {
-      const updatedTask = { ...this.task, ...this.taskForm.value };
-      this.taskService.editATask(this.task._id as string, updatedTask).pipe(takeUntil(this.destroy$)).subscribe({
-        error: (error: Error) => {
-          console.error(error);
-        }
-      })
-      this.isEditMode = false;
-      this.router.navigate(['/task-list']);
+    if (this.taskForm.valid) {
+
+      const updatedTask = this.taskForm.value;
+      this.taskService.editATask(this.task._id as string, updatedTask)
+        .pipe(takeUntil(this.destroy$)
+
+        ).subscribe({
+          next: (response) => {
+
+            if (response) {
+              this.isEditMode = false;
+              this.router.navigate(['/task-list']);
+            }
+          },
+
+        });
     }
   }
 }
