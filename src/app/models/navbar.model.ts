@@ -1,5 +1,5 @@
-export interface navItem {
+export interface NavItem {
     title: string;
     route: string;
 }
-export type NavList = navItem[];
+export type NavList = NavItem[];

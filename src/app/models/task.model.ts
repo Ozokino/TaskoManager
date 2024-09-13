@@ -6,4 +6,4 @@ export interface Task {
     createdOn: string;
     status: string;
 }
-export type tempTask = Omit<Task, '_id'>
+export type TempTask = Omit<Task, '_id'>

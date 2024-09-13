@@ -17,8 +17,7 @@ export class TaskListComponent implements OnInit {
   tasks: Task[] = [];
   private destroy$: Subject<void> = new Subject<void>;
 
-  constructor(private taskService: TaskService, private router: Router) {
-  }
+  constructor(private taskService: TaskService, private router: Router) { }
 
   ngOnInit() {
     this.getTasks();
@@ -42,18 +41,16 @@ export class TaskListComponent implements OnInit {
 
     this.taskService.deleteATask(taskId)
 
-      .pipe(
-        takeUntil(this.destroy$),
-        switchMap(() => this.taskService.getAllTasks()))
-
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: (updatedTasks: Task[]) => {
-          this.tasks = updatedTasks;
+        next: () => {
+          this.tasks = this.tasks.filter(task => task._id !== taskId);
         },
         error: (error: Error) => {
           console.error(error);
         }
       });
+    this.getTasks();
   }
   viewTaskDetail(taskId: string) {
     this.router.navigate(['/task-details', taskId]);

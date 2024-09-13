@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TaskService } from '../service/task.service';
 import { Task } from '../models/task.model';
-import { Subject } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { Router } from '@angular/router';
 
 @Component({
@@ -43,6 +43,8 @@ export class TaskCreateComponent implements OnInit {
       };
 
       this.taskService.createTask(newTask)
+        .pipe(takeUntil(this.destroy$))
+
         .subscribe(() => {
           this.taskForm.reset({ status: 'pending' });
           this.router.navigate(['/task-list']);

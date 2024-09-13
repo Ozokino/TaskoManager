@@ -38,24 +38,18 @@ export class TaskDetailsComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$),
         switchMap(paramMap => {
           const taskID = paramMap.get('id');
-
-          if (taskID) {
-            return this.taskService.getATask(taskID).pipe(
+          return this.taskService.getATask(taskID as string)
+            .pipe(
               catchError(error => {
                 console.error(error);
                 this.taskNotFound();
                 return of(null);
               })
             );
-          } else {
-            this.taskNotFound();
-            return of(null);
-          }
         })
       )
       .subscribe({
         next: (response: Task | null) => {
-
           if (response) {
             this.task = response;
             this.taskForm.setValue({
@@ -86,9 +80,8 @@ export class TaskDetailsComponent implements OnInit, OnDestroy {
 
       const updatedTask = this.taskForm.value;
       this.taskService.editATask(this.task._id as string, updatedTask)
-        .pipe(takeUntil(this.destroy$)
-
-        ).subscribe({
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
           next: (response) => {
 
             if (response) {
