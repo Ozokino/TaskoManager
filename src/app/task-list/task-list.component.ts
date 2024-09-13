@@ -28,7 +28,8 @@ export class TaskListComponent implements OnInit {
   }
 
   getTasks() {
-    this.taskService.getAllTasks().pipe(takeUntil(this.destroy$)).subscribe({
+    this.taskService.getAllTasks().pipe(takeUntil(this.destroy$))
+    .subscribe({
       next: (response: Task[]) => {
         this.tasks = response;
       },
@@ -38,19 +39,16 @@ export class TaskListComponent implements OnInit {
     })
   }
   deleteATask(taskId: string): void {
-
     this.taskService.deleteATask(taskId)
-
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: () => {
-          this.tasks = this.tasks.filter(task => task._id !== taskId);
+        next: (updatedTasks: Task[]) => {
+          this.tasks = updatedTasks;
         },
         error: (error: Error) => {
           console.error(error);
         }
       });
-    this.getTasks();
   }
   viewTaskDetail(taskId: string) {
     this.router.navigate(['/task-details', taskId]);
