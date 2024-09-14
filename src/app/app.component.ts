@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { TaskCreateComponent } from './task-create/task-create.component';
 import { TaskListComponent } from './task-list/task-list.component';
-
+import { NavItem, NavList } from './models/navbar.model';
 
 @Component({
   selector: 'tasko-root',
@@ -12,8 +12,8 @@ import { TaskListComponent } from './task-list/task-list.component';
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-noListNav: any;
-  title(title: any) {
+  noListNav: NavList = [];
+  title(title: string) {
     throw new Error('Method not implemented.');
   }
 }
