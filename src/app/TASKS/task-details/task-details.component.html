@@ -1,11 +1,17 @@
-<div *ngIf="task">
+<div *ngIf="task" class = "task-details-container">
   <div *ngIf="!isEditMode">
-    <h2>{{ task.title }}</h2>
-    <p>{{ task.description }}</p>
-    <p>Type: {{ task.type }}</p>
-    <p>Created On: {{ task.createdOn | date: 'dd/MM/yy, hh:mm a' }}</p>
-    <p>Status: {{ task.status }}</p>
-    <button type="button" (click)="editMode()">Edit</button>
+    <h3>{{ task.title }}</h3>
+    <p><strong>Description:</strong> {{ task.description }}</p>
+    <p><strong>Type: </strong>{{ task.type }}</p>
+    <p><strong>Created On:</strong> {{ task.createdOn | date: 'dd/MM/yy, hh:mm a' }}</p>
+    <p><strong>Status:</strong> {{ task.status }}</p>
+    <p><strong>Assigned To:</strong> 
+      <span *ngIf="task.assignedTo === 'UNASSIGNED'">UNASSIGNED</span>
+      <span *ngIf="task.assignedTo !== 'UNASSIGNED'">
+        {{ getUserNameById(task.assignedTo) }}
+      </span>
+    </p>
+    <button type="button" class="btn btn-info" (click)="editMode()">Edit</button>
   </div>
 
   <div *ngIf="isEditMode">
@@ -36,7 +42,12 @@
         <option value="pending">Pending</option>
         <option value="completed">Completed</option>
       </select>
-
+      <select id="assignedTo" formControlName="assignedTo">
+        <option value="UNASSIGNED">UNASSIGNED</option>
+        <option *ngFor="let user of users" [value]="user._id">
+          {{ user.firstName }} {{ user.lastName }} ({{ user.username }})
+        </option>
+      </select>
       <button type="submit" [disabled]="taskForm.invalid">Save</button>
       <button type="button" (click)="editMode()">Cancel</button>
     </form>

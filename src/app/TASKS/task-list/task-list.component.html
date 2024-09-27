@@ -1,0 +1,12 @@
+<h2>Task List</h2>
+  <div *ngFor="let task of tasks" >
+    <h3><a [routerLink]="['/task-details', task._id]" class="normal-links">{{ task.title | uppercase}}</a></h3>
+    <p><strong>Status:</strong> {{task.status}}</p>
+    <p><strong>Created On:</strong> {{ task.createdOn | date: 'dd/MM/yy, hh:mm a' }}</p>
+    <p><strong>Assigned To:</strong> {{ getUserNameById(task.assignedTo) }}</p>
+  
+    <button type="button" class="btn btn-danger" (click)="deleteATask(task._id)">Delete</button>
+  </div>
+
+
+  

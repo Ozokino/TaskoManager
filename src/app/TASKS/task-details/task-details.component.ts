@@ -1,12 +1,15 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { TaskService } from '../service/task.service';
-import { Task } from '../models/task.model';
+import { TaskService } from '../../service/task.service';
+import { Task } from '../../models/task.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { catchError, of, Subject, switchMap, takeUntil } from 'rxjs';
+import { of, Subject } from 'rxjs';
+import { catchError, switchMap, takeUntil } from 'rxjs/operators';
 import { response } from 'express';
 import { error } from 'node:console';
+import { UserService } from '../../service/user.service';
+import { User } from '../../models/user.model';
 
 @Component({
   selector: 'tasko-task-details',
@@ -16,23 +19,28 @@ import { error } from 'node:console';
   styleUrl: './task-details.component.scss'
 })
 export class TaskDetailsComponent implements OnInit, OnDestroy {
-  task: Task = { title: '', description: '', type: '', createdOn: '', status: 'pending', _id: '' };
+  task: Task = {
+    title: '', description: '', type: '', createdOn: '', status: 'pending', _id: '', assignedTo: ''};
   taskForm: FormGroup;
   isEditMode = false;
+  users: User[] = [];
   private destroy$: Subject<void> = new Subject<void>;
 
-  constructor(private route: ActivatedRoute, private taskService: TaskService, private router: Router, private fb: FormBuilder) {
+  constructor(private route: ActivatedRoute, private taskService: TaskService, private router: Router, private fb: FormBuilder, private userService: UserService) {
 
     this.taskForm = this.fb.group({
       title: ['', Validators.required],
       description: ['', Validators.required],
       type: ['', Validators.required],
-      status: ['pending', Validators.required]
+      status: ['pending'],
+      assignedTo: ['UNASSIGNED']
+
     });
   }
 
 
   ngOnInit(): void {
+    this.fetchUsers();
     this.route.paramMap
       .pipe(
         takeUntil(this.destroy$),
@@ -56,13 +64,20 @@ export class TaskDetailsComponent implements OnInit, OnDestroy {
               title: this.task.title,
               description: this.task.description,
               type: this.task.type,
-              status: this.task.status
+              status: this.task.status,
+              assignedTo: this.task.assignedTo || 'UNASSIGNED'
             });
           }
         }
       });
   }
-
+  fetchUsers() {
+    this.userService.getAllUsers()
+    .pipe(takeUntil(this.destroy$))
+    .subscribe((users: User[]) => {
+      this.users = users;
+    });
+  }
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
@@ -75,6 +90,10 @@ export class TaskDetailsComponent implements OnInit, OnDestroy {
   editMode() {
     this.isEditMode = !this.isEditMode;
   }
+  getUserNameById(userId: string): string {
+    const user = this.users.find(u => u._id === userId);
+    return user ? `${user.firstName} ${user.lastName} (${user.username})` : 'UNASSIGNED';
+  }
   onSave() {
     if (this.taskForm.valid) {
 
@@ -83,12 +102,15 @@ export class TaskDetailsComponent implements OnInit, OnDestroy {
         .pipe(takeUntil(this.destroy$))
         .subscribe({
           next: (response) => {
-
             if (response) {
               this.isEditMode = false;
               this.router.navigate(['/task-list']);
             }
           },
+          error: (error) => {
+            console.error('Error updating task:', error);
+            alert('Failed to update the task');
+          }
 
         });
     }

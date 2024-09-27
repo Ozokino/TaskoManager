@@ -5,5 +5,6 @@ export interface Task {
     type: string;
     createdOn: string;
     status: string;
+    assignedTo: string;
 }
 export type TempTask = Omit<Task, '_id'>
