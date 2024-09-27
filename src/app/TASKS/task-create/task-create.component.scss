@@ -1,0 +1,45 @@
+h2 {
+    text-align: center;
+    color: #1c0535;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #eefdf2;
+    border-radius: 10px;
+
+
+    label {
+        margin: 10px 0 5px;
+    }
+
+    input,
+    select {
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+
+        &:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+    }
+
+    input.ng-invalid.ng-touched {
+        border-color: #e74c3c;
+    }
+
+    div {
+        color: #e74c3c;
+        font-size: 0.875rem;
+        margin-top: 5px;
+    }
+
+    button {
+        margin-top: 20px;
+    }
+}

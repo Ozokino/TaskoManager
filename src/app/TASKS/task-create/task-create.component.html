@@ -27,8 +27,15 @@
       <option value="pending">Pending</option>
       <option value="completed">Completed</option>
     </select>
+    <label>Assigne to:</label>
+    <select id="assignedTo" formControlName ="assignedTo">
+      <option value="UNASSIGNED">UNASSIGNED</option>
+      <option *ngFor="let user of users" [value]="user._id">
+        {{ user.firstName }} {{ user.lastName }}  ({{ user.username }})
+      </option>
+    </select>
 
-    <button type="submit" [disabled]="taskForm.invalid">Create Task</button>
+    <button type="submit" class=" btn btn-info" [disabled]="taskForm.invalid">Create Task</button>
   </form>
   <p><br /></p>
 </div>

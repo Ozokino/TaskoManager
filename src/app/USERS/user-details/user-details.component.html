@@ -1,0 +1,26 @@
+<div *ngIf="user" class= "user-details-container">
+  <h3>User Details</h3>
+  
+  <form [formGroup]="userForm" *ngIf="isEditMode" (ngSubmit)="onSave()">
+    <label for="username"><strong>Username</strong></label>
+    <input id="username" formControlName="username" />
+
+    <label for="firstName"><strong>First Name</strong></label>
+    <input id="firstName" formControlName="firstName" />
+
+    <label for="lastName"><strong>Last Name</strong></label>
+    <input id="lastName" formControlName="lastName" />
+
+    <button type="submit" [disabled]="userForm.invalid">Save</button>
+    <button type="button" (click)="editMode()">Cancel</button>
+  </form>
+
+  <div *ngIf="!isEditMode">
+    <p><strong>Username:</strong> {{ user.username }}</p>
+    <p><strong>First Name:</strong> {{ user.firstName }}</p>
+    <p><strong>Last Name:</strong> {{ user.lastName }}</p>
+
+    <button (click)="editMode()" class="btn btn-info">Edit</button>
+    <button (click)="deleteUser()" class="btn btn-danger">Delete</button>
+  </div>
+</div>

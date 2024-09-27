@@ -5,12 +5,17 @@
       aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarNavAltMarkup" mdbCollapse>
-      <div class="navbar-nav">
-        <a class="nav-link" routerLink="/task-list" routerLinkActive="active">Task List</a>
-        <a class="nav-link" routerLink="/task-create" routerLinkActive="active">Create Task</a>
-      </div>
+    <div class="navbar-nav">
+      <a class="nav-link" routerLink="/task-list" routerLinkActive="active">Task List</a>
+      <a class="nav-link" routerLink="/task-create" routerLinkActive="active">Create Task</a>
     </div>
+    <div class="navbar-nav">
+      <a class="nav-link" routerLink="/users" routerLinkActive="active">All users</a>
+    </div>
+  </div>
+  <div class="navbar-nav ms-auto">
+    <a class="nav-link" routerLink="/login" routerLinkActive="active">Login</a>
+    <a class="nav-link" routerLink="/register" routerLinkActive="active">Register</a>
   </div>
 </nav>
 <router-outlet></router-outlet>
